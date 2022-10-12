@@ -688,6 +688,7 @@ class ImagePainterState extends State<ImagePainter> {
                         widget.onPaintModeChanged!(item.mode!);
                       }
                       _controller.value = controller.copyWith(mode: item.mode);
+                      debugPrint('_openTextDialog check it!');
                       Navigator.of(context).pop();
                     },
                   ),
@@ -796,7 +797,7 @@ class ImagePainterState extends State<ImagePainter> {
   Widget _buildControls() {
     return Container(
       padding: const EdgeInsets.all(4),
-      color: Colors.grey[200],
+      color: Color.fromRGBO(82, 88, 102, 1),
       child: Row(
         children: [
           ValueListenableBuilder<Controller>(
