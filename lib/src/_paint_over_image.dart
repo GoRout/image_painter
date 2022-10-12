@@ -842,8 +842,7 @@ class ImagePainterState extends State<ImagePainter> {
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
-            icon:
-                widget.brushIcon ?? Icon(Icons.brush, color: Colors.grey[700]),
+            icon: widget.brushIcon ?? Icon(Icons.brush, color: Colors.grey),
             itemBuilder: (_) => [_showRangeSlider()],
           ),
           IconButton(
@@ -851,8 +850,7 @@ class ImagePainterState extends State<ImagePainter> {
           const Spacer(),
           IconButton(
               tooltip: textDelegate.undo,
-              icon:
-                  widget.undoIcon ?? Icon(Icons.reply, color: Colors.grey[700]),
+              icon: widget.undoIcon ?? Icon(Icons.reply, color: Colors.grey),
               onPressed: () {
                 print(_paintHistory.length);
                 if (_paintHistory.isNotEmpty) {
@@ -861,8 +859,7 @@ class ImagePainterState extends State<ImagePainter> {
               }),
           IconButton(
             tooltip: textDelegate.clearAllProgress,
-            icon: widget.clearAllIcon ??
-                Icon(Icons.clear, color: Colors.grey[700]),
+            icon: widget.clearAllIcon ?? Icon(Icons.clear, color: Colors.grey),
             onPressed: () => setState(_paintHistory.clear),
           ),
         ],
