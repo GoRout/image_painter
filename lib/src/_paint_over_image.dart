@@ -34,6 +34,7 @@ class ImagePainter extends StatefulWidget {
       this.clearAllIcon,
       this.colorIcon,
       this.undoIcon,
+      this.isSignature = false,
       this.controlsAtTop = true,
       this.signatureBackgroundColor,
       this.colors,
@@ -226,6 +227,43 @@ class ImagePainter extends StatefulWidget {
     );
   }
 
+  ///Constructor for signature painting.
+  factory ImagePainter.signature({
+    required Key key,
+    Color? signatureBgColor,
+    double? height,
+    double? width,
+    List<Color>? colors,
+    Widget? brushIcon,
+    Widget? undoIcon,
+    Widget? clearAllIcon,
+    Widget? colorIcon,
+    ValueChanged<PaintMode>? onPaintModeChanged,
+    ValueChanged<Color>? onColorChanged,
+    ValueChanged<double>? onStrokeWidthChanged,
+    TextDelegate? textDelegate,
+    bool? controlsAtTop,
+  }) {
+    return ImagePainter._(
+      key: key,
+      height: height,
+      width: width,
+      isSignature: true,
+      isScalable: false,
+      colors: colors,
+      signatureBackgroundColor: signatureBgColor ?? Colors.white,
+      brushIcon: brushIcon,
+      undoIcon: undoIcon,
+      colorIcon: colorIcon,
+      clearAllIcon: clearAllIcon,
+      onPaintModeChanged: onPaintModeChanged,
+      onColorChanged: onColorChanged,
+      onStrokeWidthChanged: onStrokeWidthChanged,
+      textDelegate: textDelegate,
+      controlsAtTop: controlsAtTop ?? true,
+    );
+  }
+
   ///Only accessible through [ImagePainter.network] constructor.
   final String? networkUrl;
 
@@ -249,6 +287,9 @@ class ImagePainter extends StatefulWidget {
 
   ///Defines whether the widget should be scaled or not. Defaults to [false].
   final bool? isScalable;
+
+  ///Flag to determine signature or image;
+  final bool isSignature;
 
   ///Signature mode background color
   final Color? signatureBackgroundColor;
@@ -313,10 +354,15 @@ class ImagePainterState extends State<ImagePainter> {
     super.initState();
     _isLoaded = ValueNotifier<bool>(false);
     _resolveAndConvertImage();
-    _controller = ValueNotifier(const Controller().copyWith(
-        mode: widget.initialPaintMode,
-        strokeWidth: widget.initialStrokeWidth,
-        color: widget.initialColor));
+    if (widget.isSignature) {
+      _controller = ValueNotifier(
+          const Controller(mode: PaintMode.freeStyle, color: Colors.black));
+    } else {
+      _controller = ValueNotifier(const Controller().copyWith(
+          mode: widget.initialPaintMode,
+          strokeWidth: widget.initialStrokeWidth,
+          color: widget.initialColor));
+    }
     _textController = TextEditingController();
     textDelegate = widget.textDelegate ?? TextDelegate();
   }
@@ -409,13 +455,17 @@ class ImagePainterState extends State<ImagePainter> {
     return ValueListenableBuilder<bool>(
       valueListenable: _isLoaded,
       builder: (_, loaded, __) {
-        return Container(
-          height: widget.height ?? double.maxFinite,
-          width: widget.width ?? double.maxFinite,
-          child: Center(
-            child: widget.placeHolder ?? const CircularProgressIndicator(),
-          ),
-        );
+        if (loaded) {
+          return widget.isSignature ? _paintSignature() : _paintImage();
+        } else {
+          return Container(
+            height: widget.height ?? double.maxFinite,
+            width: widget.width ?? double.maxFinite,
+            child: Center(
+              child: widget.placeHolder ?? const CircularProgressIndicator(),
+            ),
+          );
+        }
       },
     );
   }
@@ -472,6 +522,85 @@ class ImagePainterState extends State<ImagePainter> {
         ],
       ),
     );
+  }
+
+  Widget _paintSignature() {
+    return Stack(
+      children: [
+        RepaintBoundary(
+          key: _repaintKey,
+          child: ClipRect(
+            child: Container(
+              width: widget.width ?? double.maxFinite,
+              height: widget.height ?? double.maxFinite,
+              child: ValueListenableBuilder<Controller>(
+                valueListenable: _controller,
+                builder: (_, controller, __) {
+                  return ImagePainterTransformer(
+                    panEnabled: false,
+                    scaleEnabled: false,
+                    onInteractionStart: _scaleStartGesture,
+                    onInteractionUpdate: (details) =>
+                        _scaleUpdateGesture(details, controller),
+                    onInteractionEnd: (details) =>
+                        _scaleEndGesture(details, controller),
+                    child: CustomPaint(
+                      willChange: true,
+                      isComplex: true,
+                      painter: DrawImage(
+                        isSignature: true,
+                        backgroundColor: widget.signatureBackgroundColor,
+                        points: _points,
+                        paintHistory: _paintHistory,
+                        isDragging: _inDrag,
+                        update: UpdatePoints(
+                            start: _start,
+                            end: _end,
+                            painter: _painter,
+                            mode: controller.mode),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                  tooltip: textDelegate.undo,
+                  icon: widget.undoIcon ??
+                      Icon(Icons.reply, color: Colors.grey[700]),
+                  onPressed: () {
+                    if (_paintHistory.isNotEmpty) {
+                      setState(_paintHistory.removeLast);
+                    }
+                  }),
+              IconButton(
+                tooltip: textDelegate.clearAllProgress,
+                icon: widget.clearAllIcon ??
+                    Icon(Icons.clear, color: Colors.grey[700]),
+                onPressed: () => setState(_paintHistory.clear),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _scaleStartGesture(ScaleStartDetails onStart) {
+    if (!widget.isSignature) {
+      setState(() {
+        _start = onStart.focalPoint;
+        _points.add(_start);
+      });
+    }
   }
 
   ///Fires while user is interacting with the screen to record painting.
@@ -559,6 +688,7 @@ class ImagePainterState extends State<ImagePainter> {
                         widget.onPaintModeChanged!(item.mode!);
                       }
                       _controller.value = controller.copyWith(mode: item.mode);
+                      debugPrint('OpenTextDialog Check it! ${item.mode}');
                       Navigator.of(context).pop();
                     },
                   ),
@@ -622,7 +752,11 @@ class ImagePainterState extends State<ImagePainter> {
   ///Can be converted to image file by writing as bytes.
   Future<Uint8List?> exportImage() async {
     late ui.Image _convertedImage;
-    if (widget.byteArray != null && _paintHistory.isEmpty) {
+    if (widget.isSignature) {
+      final _boundary = _repaintKey.currentContext!.findRenderObject()
+          as RenderRepaintBoundary;
+      _convertedImage = await _boundary.toImage(pixelRatio: 3);
+    } else if (widget.byteArray != null && _paintHistory.isEmpty) {
       return widget.byteArray;
     } else {
       _convertedImage = await _renderImage();
@@ -712,7 +846,8 @@ class ImagePainterState extends State<ImagePainter> {
             itemBuilder: (_) => [_showRangeSlider()],
           ),
           IconButton(
-              icon: const Icon(Icons.text_format), onPressed: _openTextDialog),
+              icon: const Icon(Icons.text_increase),
+              onPressed: _openTextDialog),
           const Spacer(),
           IconButton(
               tooltip: textDelegate.undo,
