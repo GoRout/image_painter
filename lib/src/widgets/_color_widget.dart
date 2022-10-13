@@ -19,11 +19,11 @@ class ColorItem extends StatelessWidget {
             color: isSelected! ? Colors.white70 : Colors.transparent,
             shape: BoxShape.circle,
             border: Border.all(
-                width: 2.0,
+                width: isSelected! ? 3.0 : 2.0,
                 color: isSelected! ? Colors.black : Colors.grey[200]!),
           ),
           child: CircleAvatar(
-              radius: isSelected! ? 24 : 20, backgroundColor: color),
+              radius: isSelected! ? 25 : 20, backgroundColor: color),
         ),
       ),
     );
