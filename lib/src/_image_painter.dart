@@ -120,6 +120,7 @@ class DrawImage extends CustomPainter {
               : Offset(_offset[0]!.dx - textPainter.width / 2,
                   _offset[0]!.dy - textPainter.height / 2);
           textPainter.paint(canvas, textOffset);
+
           break;
         default:
       }
