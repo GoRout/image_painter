@@ -686,12 +686,12 @@ class ImagePainterState extends State<ImagePainter> {
                       if (widget.onPaintModeChanged != null &&
                           item.mode != null) {
                         widget.onPaintModeChanged!(item.mode!);
-                        debugPrint('OpenTextDialog Check it! ${item.mode}')
+                        debugPrint('OpenTextDialog Check it! ${item.mode}');
                         await Future.delayed(const Duration(milliseconds: 300));
                         if (item.mode == 'PaintMode.text') {
                           debugPrint('Open Text Dialog!!');
                           _openTextDialog();
-                      }
+                        }
                       }
                       _controller.value = controller.copyWith(mode: item.mode);
                       Navigator.of(context).pop();
