@@ -227,43 +227,6 @@ class ImagePainter extends StatefulWidget {
     );
   }
 
-  ///Constructor for signature painting.
-  factory ImagePainter.signature({
-    required Key key,
-    Color? signatureBgColor,
-    double? height,
-    double? width,
-    List<Color>? colors,
-    Widget? brushIcon,
-    Widget? undoIcon,
-    Widget? clearAllIcon,
-    Widget? colorIcon,
-    ValueChanged<PaintMode>? onPaintModeChanged,
-    ValueChanged<Color>? onColorChanged,
-    ValueChanged<double>? onStrokeWidthChanged,
-    TextDelegate? textDelegate,
-    bool? controlsAtTop,
-  }) {
-    return ImagePainter._(
-      key: key,
-      height: height,
-      width: width,
-      isSignature: true,
-      isScalable: false,
-      colors: colors,
-      signatureBackgroundColor: signatureBgColor ?? Colors.white,
-      brushIcon: brushIcon,
-      undoIcon: undoIcon,
-      colorIcon: colorIcon,
-      clearAllIcon: clearAllIcon,
-      onPaintModeChanged: onPaintModeChanged,
-      onColorChanged: onColorChanged,
-      onStrokeWidthChanged: onStrokeWidthChanged,
-      textDelegate: textDelegate,
-      controlsAtTop: controlsAtTop ?? true,
-    );
-  }
-
   ///Only accessible through [ImagePainter.network] constructor.
   final String? networkUrl;
 
@@ -287,9 +250,6 @@ class ImagePainter extends StatefulWidget {
 
   ///Defines whether the widget should be scaled or not. Defaults to [false].
   final bool? isScalable;
-
-  ///Flag to determine signature or image;
-  final bool isSignature;
 
   ///Signature mode background color
   final Color? signatureBackgroundColor;
@@ -522,85 +482,6 @@ class ImagePainterState extends State<ImagePainter> {
         ],
       ),
     );
-  }
-
-  Widget _paintSignature() {
-    return Stack(
-      children: [
-        RepaintBoundary(
-          key: _repaintKey,
-          child: ClipRect(
-            child: Container(
-              width: widget.width ?? double.maxFinite,
-              height: widget.height ?? double.maxFinite,
-              child: ValueListenableBuilder<Controller>(
-                valueListenable: _controller,
-                builder: (_, controller, __) {
-                  return ImagePainterTransformer(
-                    panEnabled: false,
-                    scaleEnabled: false,
-                    onInteractionStart: _scaleStartGesture,
-                    onInteractionUpdate: (details) =>
-                        _scaleUpdateGesture(details, controller),
-                    onInteractionEnd: (details) =>
-                        _scaleEndGesture(details, controller),
-                    child: CustomPaint(
-                      willChange: true,
-                      isComplex: true,
-                      painter: DrawImage(
-                        isSignature: true,
-                        backgroundColor: widget.signatureBackgroundColor,
-                        points: _points,
-                        paintHistory: _paintHistory,
-                        isDragging: _inDrag,
-                        update: UpdatePoints(
-                            start: _start,
-                            end: _end,
-                            painter: _painter,
-                            mode: controller.mode),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          top: 0,
-          right: 0,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                  tooltip: textDelegate.undo,
-                  icon: widget.undoIcon ??
-                      Icon(Icons.reply, color: Colors.grey[700]),
-                  onPressed: () {
-                    if (_paintHistory.isNotEmpty) {
-                      setState(_paintHistory.removeLast);
-                    }
-                  }),
-              IconButton(
-                tooltip: textDelegate.clearAllProgress,
-                icon: widget.clearAllIcon ??
-                    Icon(Icons.clear, color: Colors.grey[700]),
-                onPressed: () => setState(_paintHistory.clear),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  _scaleStartGesture(ScaleStartDetails onStart) {
-    if (!widget.isSignature) {
-      setState(() {
-        _start = onStart.focalPoint;
-        _points.add(_start);
-      });
-    }
   }
 
   ///Fires while user is interacting with the screen to record painting.
