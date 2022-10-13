@@ -839,7 +839,7 @@ class ImagePainterState extends State<ImagePainter> {
                         padding: const EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey, size: 2.0),
+                          border: Border.all(color: Colors.grey, width: 2.0),
                           color: controller.color,
                         ),
                       ),
