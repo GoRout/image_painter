@@ -682,10 +682,16 @@ class ImagePainterState extends State<ImagePainter> {
                   (item) => SelectionItems(
                     data: item,
                     isSelected: controller.mode == item.mode,
-                    onTap: () {
+                    onTap: () async {
                       if (widget.onPaintModeChanged != null &&
                           item.mode != null) {
                         widget.onPaintModeChanged!(item.mode!);
+                        debugPrint('OpenTextDialog Check it! ${item.mode}')
+                        await Future.delayed(const Duration(milliseconds: 300));
+                        if (item.mode == 'PaintMode.text') {
+                          debugPrint('Open Text Dialog!!');
+                          _openTextDialog();
+                      }
                       }
                       _controller.value = controller.copyWith(mode: item.mode);
                       Navigator.of(context).pop();
@@ -930,13 +936,3 @@ class Controller {
         text: text ?? this.text);
   }
 }
-
-
-/*
-debugPrint('OpenTextDialog Check it! ${item.mode}')
-                      await Future.delayed(const Duration(milliseconds: 500));
-                      if (item.mode == 'PaintMode.text') {
-                        debugPrint('Open Text Dialog!!');
-                        _openTextDialog();
-                      }
-                      */
