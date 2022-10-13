@@ -569,7 +569,6 @@ class ImagePainterState extends State<ImagePainter> {
                         widget.onPaintModeChanged!(item.mode!);
                       }
                       _controller.value = controller.copyWith(mode: item.mode);
-                      debugPrint('_openTextDialog check it!');
                       Navigator.of(context).pop();
                     },
                   ),
@@ -693,7 +692,7 @@ class ImagePainterState extends State<ImagePainter> {
                       paintModes(textDelegate)
                           .firstWhere((item) => item.mode == _ctrl.mode)
                           .icon,
-                      color: Colors.grey[700]),
+                      color: Colors.grey),
                   itemBuilder: (_) => [_showOptionsRow(_ctrl)],
                 );
               }),
