@@ -19,6 +19,9 @@ class DrawImage extends CustomPainter {
   ///Keeps track whether the paint action is running or not.
   final bool isDragging;
 
+  ///Flag for triggering signature mode.
+  final bool isSignature;
+
   ///The background for signature painting.
   final Color? backgroundColor;
 
@@ -28,21 +31,31 @@ class DrawImage extends CustomPainter {
       this.update,
       this.points,
       this.isDragging = false,
+      this.isSignature = false,
       this.backgroundColor,
       this.paintHistory});
 
   @override
   void paint(Canvas canvas, Size size) {
-    ///paints [ui.Image] on the canvas for reference to draw over it.
-    paintImage(
-      canvas: canvas,
-      image: image!,
-      filterQuality: FilterQuality.high,
-      rect: Rect.fromPoints(
-        const Offset(0, 0),
-        Offset(size.width, size.height),
-      ),
-    );
+    if (isSignature) {
+      ///Paints background for signature.
+      canvas.drawRect(
+          Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)),
+          Paint()
+            ..style = PaintingStyle.fill
+            ..color = backgroundColor!);
+    } else {
+      ///paints [ui.Image] on the canvas for reference to draw over it.
+      paintImage(
+        canvas: canvas,
+        image: image!,
+        filterQuality: FilterQuality.high,
+        rect: Rect.fromPoints(
+          const Offset(0, 0),
+          Offset(size.width, size.height),
+        ),
+      );
+    }
 
     ///paints all the previoud paintInfo history recorded on [PaintHistory]
     for (var item in paintHistory!) {
