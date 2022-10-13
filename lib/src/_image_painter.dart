@@ -28,7 +28,6 @@ class DrawImage extends CustomPainter {
       this.update,
       this.points,
       this.isDragging = false,
-      this.isSignature = false,
       this.backgroundColor,
       this.paintHistory});
 

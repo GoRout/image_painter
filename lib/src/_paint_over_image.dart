@@ -34,7 +34,6 @@ class ImagePainter extends StatefulWidget {
       this.clearAllIcon,
       this.colorIcon,
       this.undoIcon,
-      this.isSignature = false,
       this.controlsAtTop = true,
       this.signatureBackgroundColor,
       this.colors,
@@ -314,15 +313,10 @@ class ImagePainterState extends State<ImagePainter> {
     super.initState();
     _isLoaded = ValueNotifier<bool>(false);
     _resolveAndConvertImage();
-    if (widget.isSignature) {
-      _controller = ValueNotifier(
-          const Controller(mode: PaintMode.freeStyle, color: Colors.black));
-    } else {
-      _controller = ValueNotifier(const Controller().copyWith(
-          mode: widget.initialPaintMode,
-          strokeWidth: widget.initialStrokeWidth,
-          color: widget.initialColor));
-    }
+    _controller = ValueNotifier(const Controller().copyWith(
+        mode: widget.initialPaintMode,
+        strokeWidth: widget.initialStrokeWidth,
+        color: widget.initialColor));
     _textController = TextEditingController();
     textDelegate = widget.textDelegate ?? TextDelegate();
   }
@@ -415,17 +409,13 @@ class ImagePainterState extends State<ImagePainter> {
     return ValueListenableBuilder<bool>(
       valueListenable: _isLoaded,
       builder: (_, loaded, __) {
-        if (loaded) {
-          return widget.isSignature ? _paintSignature() : _paintImage();
-        } else {
-          return Container(
-            height: widget.height ?? double.maxFinite,
-            width: widget.width ?? double.maxFinite,
-            child: Center(
-              child: widget.placeHolder ?? const CircularProgressIndicator(),
-            ),
-          );
-        }
+        return Container(
+          height: widget.height ?? double.maxFinite,
+          width: widget.width ?? double.maxFinite,
+          child: Center(
+            child: widget.placeHolder ?? const CircularProgressIndicator(),
+          ),
+        );
       },
     );
   }
@@ -632,11 +622,7 @@ class ImagePainterState extends State<ImagePainter> {
   ///Can be converted to image file by writing as bytes.
   Future<Uint8List?> exportImage() async {
     late ui.Image _convertedImage;
-    if (widget.isSignature) {
-      final _boundary = _repaintKey.currentContext!.findRenderObject()
-          as RenderRepaintBoundary;
-      _convertedImage = await _boundary.toImage(pixelRatio: 3);
-    } else if (widget.byteArray != null && _paintHistory.isEmpty) {
+    if (widget.byteArray != null && _paintHistory.isEmpty) {
       return widget.byteArray;
     } else {
       _convertedImage = await _renderImage();
