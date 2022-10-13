@@ -20,6 +20,7 @@ class TextDialog extends StatelessWidget {
       {required ValueChanged<BuildContext> onFinished}) {
     showDialog(
         context: context,
+        barrierColor: Colors.black,
         builder: (context) {
           return TextDialog(
             controller: controller,
