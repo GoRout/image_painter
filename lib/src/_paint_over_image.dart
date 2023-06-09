@@ -783,7 +783,7 @@ class ImagePainterState extends State<ImagePainter> {
   Widget _buildControls() {
     return Container(
       padding: const EdgeInsets.all(4),
-      color: Colors.grey[600],
+      color: Colors.grey[200],
       child: Row(
         children: [
           AnimatedBuilder(
@@ -834,7 +834,7 @@ class ImagePainterState extends State<ImagePainter> {
             itemBuilder: (_) => [_showRangeSlider()],
           ),
           IconButton(
-              icon: const Icon(Icons.text_format, color: Colors.blue),
+              icon: const Icon(Icons.text_format, color: Colors.black87),
               onPressed: _openTextDialog),
           const Spacer(),
           IconButton(
