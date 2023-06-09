@@ -25,9 +25,7 @@ class SelectionItems extends StatelessWidget {
         ),
         title: Text(
           data!.label!,
-          style: TextStyle(
-              fontFamily: 'Lato',
-              fontSize: 24,
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
               color: isSelected!
                   ? Colors.white
                   : Theme.of(context).textTheme.bodyText1!.color),

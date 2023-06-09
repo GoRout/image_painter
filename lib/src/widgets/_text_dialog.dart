@@ -20,7 +20,6 @@ class TextDialog extends StatelessWidget {
       {required ValueChanged<BuildContext> onFinished}) {
     showDialog(
         context: context,
-        barrierColor: const Color.fromRGBO(0, 0, 0, 0.80),
         builder: (context) {
           return TextDialog(
             controller: controller,
