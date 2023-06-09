@@ -834,7 +834,8 @@ class ImagePainterState extends State<ImagePainter> {
             itemBuilder: (_) => [_showRangeSlider()],
           ),
           IconButton(
-              icon: const Icon(Icons.text_format), onPressed: _openTextDialog),
+              icon: const Icon(Icons.text_format, color: Colors.blue),
+              onPressed: _openTextDialog),
           const Spacer(),
           IconButton(
             tooltip: textDelegate.undo,
