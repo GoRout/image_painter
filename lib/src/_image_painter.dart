@@ -8,6 +8,7 @@ import '_controller.dart';
 class DrawImage extends CustomPainter {
   ///Converted image from [ImagePainter] constructor.
   final Image? image;
+  final bool flip;
 
   ///Flag for triggering signature mode.
   final bool isSignature;
@@ -22,6 +23,7 @@ class DrawImage extends CustomPainter {
   DrawImage({
     required Controller controller,
     this.image,
+    this.flip = false,
     this.isSignature = false,
     this.backgroundColor,
   }) : super(repaint: controller) {
@@ -43,6 +45,7 @@ class DrawImage extends CustomPainter {
         canvas: canvas,
         image: image!,
         filterQuality: FilterQuality.high,
+        flipHorizontally: flip,
         rect: Rect.fromPoints(
           const Offset(0, 0),
           Offset(size.width, size.height),
