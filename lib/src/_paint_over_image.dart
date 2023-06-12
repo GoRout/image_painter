@@ -496,14 +496,20 @@ class ImagePainterState extends State<ImagePainter> {
                       scaleEnabled: widget.isScalable!,
                       onInteractionUpdate: _scaleUpdateGesture,
                       onInteractionEnd: _scaleEndGesture,
-                      child: CustomPaint(
-                        size: imageSize,
-                        willChange: true,
-                        isComplex: true,
-                        painter: DrawImage(
-                          image: _image,
-                          controller: _controller,
-                        ),
+                      child: ListView(
+                        children: <Widget>[
+                          Center(
+                            child: CustomPaint(
+                              size: imageSize,
+                              willChange: true,
+                              isComplex: true,
+                              painter: DrawImage(
+                                image: _image,
+                                controller: _controller,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -512,7 +518,7 @@ class ImagePainterState extends State<ImagePainter> {
             ),
           ),
           if (!widget.controlsAtTop) _buildControls(),
-          SizedBox(height: MediaQuery.of(context).padding.bottom + 155),
+          SizedBox(height: MediaQuery.of(context).padding.bottom + 75),
         ],
       ),
     );
