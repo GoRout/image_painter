@@ -35,6 +35,7 @@ class ImagePainter extends StatefulWidget {
     this.undoIcon,
     this.isSignature = false,
     this.controlsAtTop = true,
+    this.flip = false,
     this.signatureBackgroundColor,
     this.colors,
     this.initialPaintMode,
@@ -67,6 +68,7 @@ class ImagePainter extends StatefulWidget {
     ValueChanged<double>? onStrokeWidthChanged,
     TextDelegate? textDelegate,
     bool? controlsAtTop,
+    bool? flip,
   }) {
     return ImagePainter._(
       key: key,
@@ -88,31 +90,31 @@ class ImagePainter extends StatefulWidget {
       onStrokeWidthChanged: onStrokeWidthChanged,
       textDelegate: textDelegate,
       controlsAtTop: controlsAtTop ?? true,
+      flip: flip ?? false,
     );
   }
 
   ///Constructor for loading image from assetPath.
-  factory ImagePainter.asset(
-    String path, {
-    required Key key,
-    double? height,
-    double? width,
-    bool? scalable,
-    Widget? placeholderWidget,
-    List<Color>? colors,
-    Widget? brushIcon,
-    Widget? undoIcon,
-    Widget? clearAllIcon,
-    Widget? colorIcon,
-    PaintMode? initialPaintMode,
-    double? initialStrokeWidth,
-    Color? initialColor,
-    ValueChanged<PaintMode>? onPaintModeChanged,
-    ValueChanged<Color>? onColorChanged,
-    ValueChanged<double>? onStrokeWidthChanged,
-    TextDelegate? textDelegate,
-    bool? controlsAtTop,
-  }) {
+  factory ImagePainter.asset(String path,
+      {required Key key,
+      double? height,
+      double? width,
+      bool? scalable,
+      Widget? placeholderWidget,
+      List<Color>? colors,
+      Widget? brushIcon,
+      Widget? undoIcon,
+      Widget? clearAllIcon,
+      Widget? colorIcon,
+      PaintMode? initialPaintMode,
+      double? initialStrokeWidth,
+      Color? initialColor,
+      ValueChanged<PaintMode>? onPaintModeChanged,
+      ValueChanged<Color>? onColorChanged,
+      ValueChanged<double>? onStrokeWidthChanged,
+      TextDelegate? textDelegate,
+      bool? controlsAtTop,
+      bool? flip}) {
     return ImagePainter._(
       key: key,
       assetPath: path,
@@ -133,31 +135,31 @@ class ImagePainter extends StatefulWidget {
       onStrokeWidthChanged: onStrokeWidthChanged,
       textDelegate: textDelegate,
       controlsAtTop: controlsAtTop ?? true,
+      flip: flip ?? false,
     );
   }
 
   ///Constructor for loading image from [File].
-  factory ImagePainter.file(
-    File file, {
-    required Key key,
-    double? height,
-    double? width,
-    bool? scalable,
-    Widget? placeholderWidget,
-    List<Color>? colors,
-    Widget? brushIcon,
-    Widget? undoIcon,
-    Widget? clearAllIcon,
-    Widget? colorIcon,
-    PaintMode? initialPaintMode,
-    double? initialStrokeWidth,
-    Color? initialColor,
-    ValueChanged<PaintMode>? onPaintModeChanged,
-    ValueChanged<Color>? onColorChanged,
-    ValueChanged<double>? onStrokeWidthChanged,
-    TextDelegate? textDelegate,
-    bool? controlsAtTop,
-  }) {
+  factory ImagePainter.file(File file,
+      {required Key key,
+      double? height,
+      double? width,
+      bool? scalable,
+      Widget? placeholderWidget,
+      List<Color>? colors,
+      Widget? brushIcon,
+      Widget? undoIcon,
+      Widget? clearAllIcon,
+      Widget? colorIcon,
+      PaintMode? initialPaintMode,
+      double? initialStrokeWidth,
+      Color? initialColor,
+      ValueChanged<PaintMode>? onPaintModeChanged,
+      ValueChanged<Color>? onColorChanged,
+      ValueChanged<double>? onStrokeWidthChanged,
+      TextDelegate? textDelegate,
+      bool? controlsAtTop,
+      bool? flip}) {
     return ImagePainter._(
       key: key,
       file: file,
@@ -178,89 +180,89 @@ class ImagePainter extends StatefulWidget {
       onStrokeWidthChanged: onStrokeWidthChanged,
       textDelegate: textDelegate,
       controlsAtTop: controlsAtTop ?? true,
+      flip: flip ?? false,
     );
   }
 
   ///Constructor for loading image from memory.
-  factory ImagePainter.memory(
-    Uint8List byteArray, {
-    required Key key,
-    double? height,
-    double? width,
-    bool? scalable,
-    Widget? placeholderWidget,
-    List<Color>? colors,
-    Widget? brushIcon,
-    Widget? undoIcon,
-    Widget? clearAllIcon,
-    Widget? colorIcon,
-    PaintMode? initialPaintMode,
-    double? initialStrokeWidth,
-    Color? initialColor,
-    ValueChanged<PaintMode>? onPaintModeChanged,
-    ValueChanged<Color>? onColorChanged,
-    ValueChanged<double>? onStrokeWidthChanged,
-    TextDelegate? textDelegate,
-    bool? controlsAtTop,
-  }) {
+  factory ImagePainter.memory(Uint8List byteArray,
+      {required Key key,
+      double? height,
+      double? width,
+      bool? scalable,
+      Widget? placeholderWidget,
+      List<Color>? colors,
+      Widget? brushIcon,
+      Widget? undoIcon,
+      Widget? clearAllIcon,
+      Widget? colorIcon,
+      PaintMode? initialPaintMode,
+      double? initialStrokeWidth,
+      Color? initialColor,
+      ValueChanged<PaintMode>? onPaintModeChanged,
+      ValueChanged<Color>? onColorChanged,
+      ValueChanged<double>? onStrokeWidthChanged,
+      TextDelegate? textDelegate,
+      bool? controlsAtTop,
+      bool? flip}) {
     return ImagePainter._(
-      key: key,
-      byteArray: byteArray,
-      height: height,
-      width: width,
-      placeHolder: placeholderWidget,
-      isScalable: scalable ?? false,
-      colors: colors,
-      brushIcon: brushIcon,
-      undoIcon: undoIcon,
-      colorIcon: colorIcon,
-      clearAllIcon: clearAllIcon,
-      initialPaintMode: initialPaintMode,
-      initialColor: initialColor,
-      initialStrokeWidth: initialStrokeWidth,
-      onPaintModeChanged: onPaintModeChanged,
-      onColorChanged: onColorChanged,
-      onStrokeWidthChanged: onStrokeWidthChanged,
-      textDelegate: textDelegate,
-      controlsAtTop: controlsAtTop ?? true,
-    );
+        key: key,
+        byteArray: byteArray,
+        height: height,
+        width: width,
+        placeHolder: placeholderWidget,
+        isScalable: scalable ?? false,
+        colors: colors,
+        brushIcon: brushIcon,
+        undoIcon: undoIcon,
+        colorIcon: colorIcon,
+        clearAllIcon: clearAllIcon,
+        initialPaintMode: initialPaintMode,
+        initialColor: initialColor,
+        initialStrokeWidth: initialStrokeWidth,
+        onPaintModeChanged: onPaintModeChanged,
+        onColorChanged: onColorChanged,
+        onStrokeWidthChanged: onStrokeWidthChanged,
+        textDelegate: textDelegate,
+        controlsAtTop: controlsAtTop ?? true,
+        flip: flip ?? false);
   }
 
   ///Constructor for signature painting.
-  factory ImagePainter.signature({
-    required Key key,
-    Color? signatureBgColor,
-    double? height,
-    double? width,
-    List<Color>? colors,
-    Widget? brushIcon,
-    Widget? undoIcon,
-    Widget? clearAllIcon,
-    Widget? colorIcon,
-    ValueChanged<PaintMode>? onPaintModeChanged,
-    ValueChanged<Color>? onColorChanged,
-    ValueChanged<double>? onStrokeWidthChanged,
-    TextDelegate? textDelegate,
-    bool? controlsAtTop,
-  }) {
+  factory ImagePainter.signature(
+      {required Key key,
+      Color? signatureBgColor,
+      double? height,
+      double? width,
+      List<Color>? colors,
+      Widget? brushIcon,
+      Widget? undoIcon,
+      Widget? clearAllIcon,
+      Widget? colorIcon,
+      ValueChanged<PaintMode>? onPaintModeChanged,
+      ValueChanged<Color>? onColorChanged,
+      ValueChanged<double>? onStrokeWidthChanged,
+      TextDelegate? textDelegate,
+      bool? controlsAtTop,
+      bool? flip}) {
     return ImagePainter._(
-      key: key,
-      height: height,
-      width: width,
-      isSignature: true,
-      isScalable: false,
-      colors: colors,
-      signatureBackgroundColor: signatureBgColor ?? Colors.white,
-      brushIcon: brushIcon,
-      undoIcon: undoIcon,
-      colorIcon: colorIcon,
-      clearAllIcon: clearAllIcon,
-      onPaintModeChanged: onPaintModeChanged,
-      onColorChanged: onColorChanged,
-      onStrokeWidthChanged: onStrokeWidthChanged,
-      textDelegate: textDelegate,
-      controlsAtTop: controlsAtTop ?? true,
-    );
+        key: key,
+        height: height,
+        width: width,
+        isSignature: true,
+        isScalable: false,
+        colors: colors,
+        signatureBackgroundColor: signatureBgColor ?? Colors.white,
+        brushIcon: brushIcon,
+        undoIcon: undoIcon,
+        colorIcon: colorIcon,
+        clearAllIcon: clearAllIcon,
+        onPaintModeChanged: onPaintModeChanged,
+        onColorChanged: onColorChanged,
+        onStrokeWidthChanged: onStrokeWidthChanged,
+        textDelegate: textDelegate,
+        controlsAtTop: controlsAtTop ?? true,
+        flip: flip ?? false);
   }
 
   ///Only accessible through [ImagePainter.network] constructor.
@@ -289,6 +291,9 @@ class ImagePainter extends StatefulWidget {
 
   ///Flag to determine signature or image;
   final bool isSignature;
+
+  ///Flag to determine flipped image;
+  final bool flip;
 
   ///Signature mode background color
   final Color? signatureBackgroundColor;
@@ -502,6 +507,7 @@ class ImagePainterState extends State<ImagePainter> {
                         isComplex: true,
                         painter: DrawImage(
                           image: _image,
+                          flip: true,
                           controller: _controller,
                         ),
                       ),
@@ -542,6 +548,7 @@ class ImagePainterState extends State<ImagePainter> {
                       isComplex: true,
                       painter: DrawImage(
                         isSignature: true,
+                        flip: false,
                         backgroundColor: widget.signatureBackgroundColor,
                         controller: _controller,
                       ),
