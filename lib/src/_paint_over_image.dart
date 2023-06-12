@@ -512,7 +512,11 @@ class ImagePainterState extends State<ImagePainter> {
             ),
           ),
           if (!widget.controlsAtTop) _buildControls(),
-          SizedBox(height: MediaQuery.of(context).padding.bottom)
+          SizedBox(height: MediaQuery.of(context).padding.bottom),
+          TextFormField(
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontSize: 18),
+          ),
         ],
       ),
     );
