@@ -22,8 +22,8 @@ class DrawImage extends CustomPainter {
   ///Constructor for the canvas
   DrawImage({
     required Controller controller,
+    required this.flip,
     this.image,
-    this.flip = false,
     this.isSignature = false,
     this.backgroundColor,
   }) : super(repaint: controller) {

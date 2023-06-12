@@ -68,7 +68,7 @@ class ImagePainter extends StatefulWidget {
     ValueChanged<double>? onStrokeWidthChanged,
     TextDelegate? textDelegate,
     bool? controlsAtTop,
-    bool? flip,
+    required bool flip,
   }) {
     return ImagePainter._(
       key: key,
@@ -90,7 +90,7 @@ class ImagePainter extends StatefulWidget {
       onStrokeWidthChanged: onStrokeWidthChanged,
       textDelegate: textDelegate,
       controlsAtTop: controlsAtTop ?? true,
-      flip: flip ?? false,
+      flip: flip,
     );
   }
 
@@ -114,7 +114,7 @@ class ImagePainter extends StatefulWidget {
       ValueChanged<double>? onStrokeWidthChanged,
       TextDelegate? textDelegate,
       bool? controlsAtTop,
-      bool? flip}) {
+      required bool flip}) {
     return ImagePainter._(
       key: key,
       assetPath: path,
@@ -135,7 +135,7 @@ class ImagePainter extends StatefulWidget {
       onStrokeWidthChanged: onStrokeWidthChanged,
       textDelegate: textDelegate,
       controlsAtTop: controlsAtTop ?? true,
-      flip: flip ?? false,
+      flip: flip,
     );
   }
 
@@ -159,7 +159,7 @@ class ImagePainter extends StatefulWidget {
       ValueChanged<double>? onStrokeWidthChanged,
       TextDelegate? textDelegate,
       bool? controlsAtTop,
-      bool? flip}) {
+      required bool flip}) {
     return ImagePainter._(
       key: key,
       file: file,
@@ -180,7 +180,7 @@ class ImagePainter extends StatefulWidget {
       onStrokeWidthChanged: onStrokeWidthChanged,
       textDelegate: textDelegate,
       controlsAtTop: controlsAtTop ?? true,
-      flip: flip ?? false,
+      flip: flip,
     );
   }
 
@@ -204,7 +204,7 @@ class ImagePainter extends StatefulWidget {
       ValueChanged<double>? onStrokeWidthChanged,
       TextDelegate? textDelegate,
       bool? controlsAtTop,
-      bool? flip}) {
+      required bool flip}) {
     return ImagePainter._(
         key: key,
         byteArray: byteArray,
@@ -225,7 +225,7 @@ class ImagePainter extends StatefulWidget {
         onStrokeWidthChanged: onStrokeWidthChanged,
         textDelegate: textDelegate,
         controlsAtTop: controlsAtTop ?? true,
-        flip: flip ?? false);
+        flip: flip);
   }
 
   ///Constructor for signature painting.
@@ -244,7 +244,7 @@ class ImagePainter extends StatefulWidget {
       ValueChanged<double>? onStrokeWidthChanged,
       TextDelegate? textDelegate,
       bool? controlsAtTop,
-      bool? flip}) {
+      required bool flip}) {
     return ImagePainter._(
         key: key,
         height: height,
@@ -262,7 +262,7 @@ class ImagePainter extends StatefulWidget {
         onStrokeWidthChanged: onStrokeWidthChanged,
         textDelegate: textDelegate,
         controlsAtTop: controlsAtTop ?? true,
-        flip: flip ?? false);
+        flip: flip);
   }
 
   ///Only accessible through [ImagePainter.network] constructor.
@@ -344,6 +344,7 @@ class ImagePainter extends StatefulWidget {
 class ImagePainterState extends State<ImagePainter> {
   final _repaintKey = GlobalKey();
   ui.Image? _image;
+  late bool _flip;
   late Controller _controller;
   late final ValueNotifier<bool> _isLoaded;
   late final TextEditingController _textController;
@@ -354,6 +355,7 @@ class ImagePainterState extends State<ImagePainter> {
   @override
   void initState() {
     super.initState();
+    _flip = widget.flip;
     _isLoaded = ValueNotifier<bool>(false);
     _controller = Controller();
     if (widget.isSignature) {
@@ -507,7 +509,7 @@ class ImagePainterState extends State<ImagePainter> {
                         isComplex: true,
                         painter: DrawImage(
                           image: _image,
-                          flip: true,
+                          flip: _flip,
                           controller: _controller,
                         ),
                       ),
@@ -648,7 +650,8 @@ class ImagePainterState extends State<ImagePainter> {
   Future<ui.Image> _renderImage() async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
-    final painter = DrawImage(image: _image, controller: _controller);
+    final painter =
+        DrawImage(image: _image, controller: _controller, flip: _flip);
     final size = Size(_image!.width.toDouble(), _image!.height.toDouble());
     painter.paint(canvas, size);
     return recorder
