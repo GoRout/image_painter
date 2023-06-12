@@ -496,20 +496,14 @@ class ImagePainterState extends State<ImagePainter> {
                       scaleEnabled: widget.isScalable!,
                       onInteractionUpdate: _scaleUpdateGesture,
                       onInteractionEnd: _scaleEndGesture,
-                      child: ListView(
-                        children: <Widget>[
-                          Center(
-                            child: CustomPaint(
-                              size: imageSize,
-                              willChange: true,
-                              isComplex: true,
-                              painter: DrawImage(
-                                image: _image,
-                                controller: _controller,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: CustomPaint(
+                        size: imageSize,
+                        willChange: true,
+                        isComplex: true,
+                        painter: DrawImage(
+                          image: _image,
+                          controller: _controller,
+                        ),
                       ),
                     );
                   },
