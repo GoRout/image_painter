@@ -481,6 +481,10 @@ class ImagePainterState extends State<ImagePainter> {
       child: Column(
         children: [
           if (widget.controlsAtTop) _buildControls(),
+          TextFormField(
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontSize: 18),
+          ),
           Expanded(
             child: FittedBox(
               alignment: FractionalOffset.center,
@@ -513,10 +517,6 @@ class ImagePainterState extends State<ImagePainter> {
           ),
           if (!widget.controlsAtTop) _buildControls(),
           SizedBox(height: MediaQuery.of(context).padding.bottom),
-          TextFormField(
-            textAlign: TextAlign.left,
-            style: const TextStyle(fontSize: 18),
-          ),
         ],
       ),
     );
