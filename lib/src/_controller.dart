@@ -84,7 +84,7 @@ class Controller extends ChangeNotifier {
 
   void setColor(Color color) {
     _color = color;
-    debugPrint('Updated color: $color');
+    debugPrint('Updated color: ${color.value.toRadixString(16)}');
     notifyListeners();
   }
 
