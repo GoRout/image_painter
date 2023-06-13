@@ -1,5 +1,6 @@
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
-
 import '../image_painter.dart';
 
 class Controller extends ChangeNotifier {
@@ -12,6 +13,9 @@ class Controller extends ChangeNotifier {
   final List<Offset?> _offsets = [];
 
   final List<PaintInfo> _paintHistory = [];
+
+  // add local storage variable
+  final store = GetStorage();
 
   Offset? _start, _end;
 
@@ -85,6 +89,7 @@ class Controller extends ChangeNotifier {
 
   void setColor(Color color) {
     _color = color;
+    store.write('editorCorlor', color);
     notifyListeners();
   }
 
