@@ -84,6 +84,7 @@ class Controller extends ChangeNotifier {
 
   void setColor(Color color) {
     _color = color;
+    debugPrint('Updated color: $color');
     notifyListeners();
   }
 
