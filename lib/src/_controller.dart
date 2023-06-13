@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import '../image_painter.dart';
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
 class Controller extends ChangeNotifier {
   late double _strokeWidth;
   late Color _color;
@@ -84,7 +92,8 @@ class Controller extends ChangeNotifier {
 
   void setColor(Color color) {
     _color = color;
-    debugPrint('Updated color: ${color.value.toRadixString(16)}');
+    debugPrint(
+        'Updated color: ${color.value.toRadixString(16)}, ${HexColor(color.value.toRadixString(16))}');
     notifyListeners();
   }
 
